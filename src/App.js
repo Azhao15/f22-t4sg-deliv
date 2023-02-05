@@ -134,7 +134,7 @@ export default function App() {
 
   // Main content of homescreen. This is displayed conditionally from user auth status
 
-  const results = entries.filter(entry => (entry.category === filter || filter === 4) && (entry.user === search || search === '') && (entry.description.includes(description)))
+  const results = entries.filter(entry => (entry.category === filter || filter === 4) && (entry.user.inclues === search || search === '') && (entry.description.includes(description)))
   function mainContent() {
     if (isSignedIn) {
       return (
@@ -161,7 +161,7 @@ export default function App() {
               <TextField
                   marginBottom={20}
                   id="search"
-                  label="Name Search"
+                  label="User Search"
                   fullWidth
                   variant="outlined"
                   style={{ width: 200}}
@@ -175,7 +175,7 @@ export default function App() {
                   label="Description Search"
                   fullWidth
                   variant="outlined"
-                  style={{ width: 300}}
+                  style={{ width: 400}}
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
               />
