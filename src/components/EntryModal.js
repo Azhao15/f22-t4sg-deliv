@@ -12,8 +12,8 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { useState } from 'react';
-import { categories } from '../utils/categories';
-import { addEntry } from '../utils/mutations';
+import { categories} from '../utils/categories';
+import { addEntry, updateEntry, deleteEntry } from '../utils/mutations';
 
 // Modal component for individual entries.
 
@@ -35,6 +35,8 @@ export default function EntryModal({ entry, type, user }) {
    const [link, setLink] = useState(entry.link);
    const [description, setDescription] = useState(entry.description);
    const [category, setCategory] = React.useState(entry.category);
+   const [edit, setEdit] = useState(false);
+   
 
    // Modal visibility handlers
 
@@ -47,6 +49,7 @@ export default function EntryModal({ entry, type, user }) {
    };
 
    const handleClose = () => {
+      setEdit(false);
       setOpen(false);
    };
 
@@ -68,7 +71,24 @@ export default function EntryModal({ entry, type, user }) {
 
    // TODO: Add Edit Mutation Handler
 
+   const handleEdit = () => {
+      const changeEntry = {
+         name: name,
+         link: link,
+         description: description,
+         category: category,
+         id: entry.id,
+      };
+      updateEntry(changeEntry).catch(console.error);
+      handleClose();
+   }
+
    // TODO: Add Delete Mutation Handler
+
+   const handleDelete = () => {
+      deleteEntry(entry).catch(console.error);
+      handleClose();
+   }
 
    // Button handlers for modal opening and inside-modal actions.
    // These buttons are displayed conditionally based on if adding or editing/opening.
@@ -78,15 +98,19 @@ export default function EntryModal({ entry, type, user }) {
       type === "edit" ? <IconButton onClick={handleClickOpen}>
          <OpenInNewIcon />
       </IconButton>
-         : type === "add" ? <Button variant="contained" onClick={handleClickOpen}>
-            Add entry
-         </Button>
+         : type === "add" ? 
+            <Button variant="contained" onClick={handleClickOpen} >
+               Add entry
+            </Button>
             : null;
 
    const actionButtons =
       type === "edit" ?
          <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
+            <Button color='warning' onClick={handleDelete}>Delete</Button>
+            <Button variant="contained" onClick={() => setEdit(true)} sx ={{display: edit ? 'none':'inline'}}>Edit</Button>
+            <Button variant="contained" onClick={handleEdit} sx ={{display: edit ? 'inline':'none'}}>Confirm</Button>
          </DialogActions>
          : type === "add" ?
             <DialogActions>
@@ -110,6 +134,9 @@ export default function EntryModal({ entry, type, user }) {
                   variant="standard"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
+                  inputProps={{
+                     readOnly: type === "edit" ? !edit : false,
+                  }}
                />
                <TextField
                   margin="normal"
@@ -120,6 +147,9 @@ export default function EntryModal({ entry, type, user }) {
                   variant="standard"
                   value={link}
                   onChange={(event) => setLink(event.target.value)}
+                  inputProps={{
+                     readOnly: type === "edit" ? !edit : false,
+                  }}
                />
                <TextField
                   margin="normal"
@@ -131,6 +161,9 @@ export default function EntryModal({ entry, type, user }) {
                   maxRows={8}
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
+                  inputProps={{
+                     readOnly: type === "edit" ? !edit : false,
+                  }}
                />
 
                <FormControl fullWidth sx={{ "margin-top": 20 }}>
@@ -141,6 +174,9 @@ export default function EntryModal({ entry, type, user }) {
                      value={category}
                      label="Category"
                      onChange={(event) => setCategory(event.target.value)}
+                     inputProps={{
+                        readOnly: type === "edit" ? !edit : false,
+                     }}
                   >
                      {categories.map((category) => (<MenuItem value={category.id}>{category.name}</MenuItem>))}
                   </Select>

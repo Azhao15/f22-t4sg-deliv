@@ -6,14 +6,20 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
 import MuiDrawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import List from '@mui/material/List';
+import Select from '@mui/material/Select';
 import Stack from "@mui/material/Stack";
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import firebase from 'firebase/compat/app';
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -82,6 +88,9 @@ export default function App() {
 
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
   const [currentUser, setcurrentUser] = useState(null); // Local user info
+  const [filter, setFilter] = React.useState(4)
+  const [search, setSearch] = useState('');
+  const [description, setDescription] = useState('')
 
   // Listen to the Firebase Auth state and set the local state.
   useEffect(() => {
@@ -119,11 +128,13 @@ export default function App() {
       // Set Entries state variable to the current snapshot
       // For each entry, appends the document ID as an object property along with the existing document data
       setEntries(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+      
     })
   }, [currentUser]);
 
   // Main content of homescreen. This is displayed conditionally from user auth status
 
+  const results = entries.filter(entry => (entry.category === filter || filter === 4) && (entry.user === search || search === '') && (entry.description.includes(description)))
   function mainContent() {
     if (isSignedIn) {
       return (
@@ -134,7 +145,7 @@ export default function App() {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <EntryTable entries={entries} />
+            <EntryTable entries={results} />
           </Grid>
         </Grid>
       )
@@ -143,6 +154,7 @@ export default function App() {
     )
   }
 
+  
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -229,7 +241,47 @@ export default function App() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container spacing={5} maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid>
+              <FormControl sx={{ "margin-bottom": 20, "margin-right": 20}}>
+                <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filter}
+                  label="filter"
+                  style={{ width: 200}}
+                  onChange={(event) => {setFilter(event.target.value)}}
+                >
+                  <MenuItem value={0}>Default</MenuItem>
+                  <MenuItem value={1}>Startup</MenuItem>
+                  <MenuItem value={2}>Nonprofit</MenuItem>
+                  <MenuItem value={3}>Misc</MenuItem>
+                  <MenuItem value={4}>None</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                  marginBottom={20}
+                  id="search"
+                  label="Name Search"
+                  fullWidth
+                  variant="outlined"
+                  style={{ width: 200}}
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+              />
+              <TextField
+                  sx={{ ml: 2.5}}
+                  marginBottom={20}
+                  id="descriptionSearch"
+                  label="Description Search"
+                  fullWidth
+                  variant="outlined"
+                  style={{ width: 300}}
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+              />
+            </Grid>
             {mainContent()}
           </Container>
         </Box>
