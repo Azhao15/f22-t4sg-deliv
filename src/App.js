@@ -138,7 +138,48 @@ export default function App() {
   function mainContent() {
     if (isSignedIn) {
       return (
+         
         <Grid container spacing={3}>
+         <Grid item xs={12}>
+         <FormControl sx={{ "margin-bottom": 20, "margin-right": 20}}>
+                <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filter}
+                  label="filter"
+                  style={{ width: 200}}
+                  onChange={(event) => {setFilter(event.target.value)}}
+                >
+                  <MenuItem value={0}>Default</MenuItem>
+                  <MenuItem value={1}>Startup</MenuItem>
+                  <MenuItem value={2}>Nonprofit</MenuItem>
+                  <MenuItem value={3}>Misc</MenuItem>
+                  <MenuItem value={4}>None</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                  marginBottom={20}
+                  id="search"
+                  label="Name Search"
+                  fullWidth
+                  variant="outlined"
+                  style={{ width: 200}}
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+              />
+              <TextField
+                  sx={{ ml: 2.5}}
+                  marginBottom={20}
+                  id="descriptionSearch"
+                  label="Description Search"
+                  fullWidth
+                  variant="outlined"
+                  style={{ width: 300}}
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+              />
+         </Grid>
           <Grid item xs={12}>
             <Stack direction="row" spacing={3}>
               <EntryModal entry={emptyEntry} type="add" user={currentUser} />
@@ -241,47 +282,7 @@ export default function App() {
           }}
         >
           <Toolbar />
-          <Container spacing={5} maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid>
-              <FormControl sx={{ "margin-bottom": 20, "margin-right": 20}}>
-                <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={filter}
-                  label="filter"
-                  style={{ width: 200}}
-                  onChange={(event) => {setFilter(event.target.value)}}
-                >
-                  <MenuItem value={0}>Default</MenuItem>
-                  <MenuItem value={1}>Startup</MenuItem>
-                  <MenuItem value={2}>Nonprofit</MenuItem>
-                  <MenuItem value={3}>Misc</MenuItem>
-                  <MenuItem value={4}>None</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                  marginBottom={20}
-                  id="search"
-                  label="Name Search"
-                  fullWidth
-                  variant="outlined"
-                  style={{ width: 200}}
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-              />
-              <TextField
-                  sx={{ ml: 2.5}}
-                  marginBottom={20}
-                  id="descriptionSearch"
-                  label="Description Search"
-                  fullWidth
-                  variant="outlined"
-                  style={{ width: 300}}
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-              />
-            </Grid>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {mainContent()}
           </Container>
         </Box>
