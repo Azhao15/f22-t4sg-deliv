@@ -140,55 +140,55 @@ export default function App() {
       return (
          // added dropdown for filter, and textboxes for user and description search
         <Grid container spacing={3}>
-         <Grid item xs={12}>
-         <FormControl sx={{ "margin-bottom": 20, "margin-right": 20}}>
-                <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={filter}
-                  label="filter"
-                  style={{ width: 200}}
-                  onChange={(event) => {setFilter(event.target.value)}}
-                >
-                  <MenuItem value={0}>Default</MenuItem>
-                  <MenuItem value={1}>Startup</MenuItem>
-                  <MenuItem value={2}>Nonprofit</MenuItem>
-                  <MenuItem value={3}>Misc</MenuItem>
-                  <MenuItem value={4}>None</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                  marginBottom={20}
-                  id="search"
-                  label="User Search"
-                  fullWidth
-                  variant="outlined"
-                  style={{ width: 200}}
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-              />
-              <TextField
-                  sx={{ ml: 2.5}}
-                  marginBottom={20}
-                  id="descriptionSearch"
-                  label="Description Search"
-                  fullWidth
-                  variant="outlined"
-                  style={{ width: 400}}
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-              />
+            <Grid item xs={12}>
+               <FormControl sx={{ "margin-bottom": 20, "margin-right": 20}}>
+                  <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                  <Select
+                     labelId="demo-simple-select-label"
+                     id="demo-simple-select"
+                     value={filter}
+                     label="filter"
+                     style={{ width: 200}}
+                     onChange={(event) => {setFilter(event.target.value)}}
+                  >
+                     <MenuItem value={0}>Default</MenuItem>
+                     <MenuItem value={1}>Startup</MenuItem>
+                     <MenuItem value={2}>Nonprofit</MenuItem>
+                     <MenuItem value={3}>Misc</MenuItem>
+                     <MenuItem value={4}>None</MenuItem>
+                  </Select>
+               </FormControl>
+               <TextField
+                     marginBottom={20}
+                     id="search"
+                     label="User Search"
+                     fullWidth
+                     variant="outlined"
+                     style={{ width: 200}}
+                     value={search}
+                     onChange={(event) => setSearch(event.target.value)}
+               />
+               <TextField
+                     sx={{ ml: 2.5}}
+                     marginBottom={20}
+                     id="descriptionSearch"
+                     label="Description Search"
+                     fullWidth
+                     variant="outlined"
+                     style={{ width: 400}}
+                     value={description}
+                     onChange={(event) => setDescription(event.target.value)}
+               />
+            </Grid>
+            <Grid item xs={12}>
+               <Stack direction="row" spacing={3}>
+               <EntryModal entry={emptyEntry} type="add" user={currentUser} />
+               </Stack>
+            </Grid>
+            <Grid item xs={12}>
+               <EntryTable entries={results} />
+            </Grid>
          </Grid>
-          <Grid item xs={12}>
-            <Stack direction="row" spacing={3}>
-              <EntryModal entry={emptyEntry} type="add" user={currentUser} />
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <EntryTable entries={results} />
-          </Grid>
-        </Grid>
       )
     } else return (
       <SignInScreen></SignInScreen>
