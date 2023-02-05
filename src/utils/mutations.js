@@ -36,6 +36,5 @@ export async function updateEntry(entry) {
 
 export async function deleteEntry(entry) {
    // TODO: Create Mutation to Delete Entry
-   const docRef = doc(db, "entries", entry.id);
-   await deleteDoc(docRef);
+   await deleteDoc(doc(db, "entries", entry.id));
 }

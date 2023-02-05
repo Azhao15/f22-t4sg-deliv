@@ -134,6 +134,7 @@ export default function EntryModal({ entry, type, user }) {
                   variant="standard"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
+                  // textfields are read only when not editing
                   inputProps={{
                      readOnly: type === "edit" ? !edit : false,
                   }}

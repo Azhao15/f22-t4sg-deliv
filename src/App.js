@@ -133,12 +133,12 @@ export default function App() {
   }, [currentUser]);
 
   // Main content of homescreen. This is displayed conditionally from user auth status
-
-  const results = entries.filter(entry => (entry.category === filter || filter === 4) && (entry.user.inclues === search || search === '') && (entry.description.includes(description)))
+  // filters entries based on searches/filters
+  const results = entries.filter(entry => (entry.category === filter || filter === 4) && (entry.user.toLowerCase().includes(search.toLowerCase()) || search === '') && (entry.description.toLowerCase().includes(description.toLowerCase())))
   function mainContent() {
     if (isSignedIn) {
       return (
-         
+         // added dropdown for filter, and textboxes for user and description search
         <Grid container spacing={3}>
          <Grid item xs={12}>
          <FormControl sx={{ "margin-bottom": 20, "margin-right": 20}}>
